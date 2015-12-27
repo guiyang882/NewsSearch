@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+# coding=utf-8
+
+from scrapy.contrib.spiders import CrawlSpider, Rule
+from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from News_Scrapy.items import NewsScrapyItem
+from scrapy.conf import settings
+import os,pickle,signal
+import sys,types,re
+from bs4 import BeautifulSoup
+
+## MySelf define the Global Variable
+SAVED_URL = set()
+if os.path.isfile(settings["SAVED_URL_PATH"]):
+    with open(settings["SAVED_URL_PATH"],"rb") as handle:
+        SAVED_URL = pickle.load(handle)
+
+def save_url_pkl(sig,frame):
+    with open(settings["SAVED_URL_PATH"],"wb") as handle:
+        pickle.dump(SAVED_URL,handle)
+    sys.exit(0)
+
+#signal.signal(signal.SIGINT,save_url_pkl)
+
+class NetEaseSpider(CrawlSpider):
+    name = "News_Scrapy"
+    allowed_domains = ["news.163.com"]
+    start_urls = ["http://news.163.com/domestic/","http://news.163.com/world/","http://news.163.com/shehui/","http://war.163.com/","http://gov.163.com/"]
+    rules = [
+        Rule(SgmlLinkExtractor(allow=(r'http://news.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
+        Rule(SgmlLinkExtractor(allow=(r'http://war.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
+        Rule(SgmlLinkExtractor(allow=(r'http://gov.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
+    ]
+
+    def parse_item(self,response):
+        if response.url not in SAVED_URL:
+            SAVED_URL.add(response.url)
+            soup = BeautifulSoup(response.body)
+            news_item = NewsScrapyItem()
+            news_item["news_title"] = soup.find("title").string
+            new_date_list = soup.findAll("div",{"class":["ep-time-soure cDGray","pub_time"]}) 
+            news_date_re = re.findall(r"\d{2}/\d{4}/\d{2}",response.url)[0].split("/")
+            news_item["news_date"] = "20" + news_date_re[0] + "-" + news_date_re[1][:2] + "-" + news_date_re[1][-2:] + " " + news_date_re[2]
+            if len(new_date_list) != 0:
+                news_item["news_date"] = new_date_list[0].string[:19]
+            tmp_news_source = soup.find("a",{"id":"ne_article_source"})
+            if tmp_news_source != None:
+                news_item["news_source"] = tmp_news_source.string
+            else:
+                news_item["news_source"] = "NetEase"
+            data = soup.findAll("div",{"id":"endText"})[0]
+            data_list = data.findAll("p",{"class":""})
+            contents = ""
+            for item in data_list:
+                if type(item.string) != types.NoneType:
+                    test = item.string.encode("utf-8")
+                    contents = contents + test
+            news_item["news_content"] = contents
+            return news_item
+    
