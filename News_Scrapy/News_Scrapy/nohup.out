@@ -1,0 +1,8 @@
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Loading model cost 0.410 seconds.
+Prefix dict has been built succesfully.
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Loading model cost 0.409 seconds.
+Prefix dict has been built succesfully.

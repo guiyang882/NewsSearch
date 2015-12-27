@@ -33,8 +33,10 @@ class NewsScrapyPipeline(object):
                 "news_content":item['news_content'],
                 "news_key":item['news_key']
             }]
-            self.collection.insert(new_moive)
-            log.msg("Item wrote to MongoDB database %s/%s" % (settings['MONGODB_DB'], settings['MONGODB_COLLECTION']),
-            level=log.DEBUG, spider=spider) 
+            list_res = list(self.collection.find({"news_title":item["news_title"]}))
+            if len(list_res) == 0:
+                self.collection.insert(new_moive)
+                log.msg("Item wrote to MongoDB database %s/%s" % (settings['MONGODB_DB'], settings['MONGODB_COLLECTION']),
+                level=log.DEBUG, spider=spider) 
         return item
 

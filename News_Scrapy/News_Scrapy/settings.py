@@ -2,7 +2,6 @@
 
 # Scrapy settings for News_Scrapy project
 import os
-import pickle
 
 BASE_DIR = os.path.split(os.path.realpath(__file__))[0]
 
@@ -20,6 +19,11 @@ ITEM_PIPELINES={
 
 LOG_LEVEL='DEBUG'
 
+CONCURRENT_REQUESTS=20
+CONCURRENT_REQUESTS_PER_DOMAIN = 20
+DEPTH_PRIORITY=0
+DEPTH_STATS=True
+DEPTH_STATS_VERBOSE=True
 DOWNLOAD_DELAY = 2
 RANDOMIZE_DOWNLOAD_DELAY = True
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5'
