@@ -5,9 +5,11 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from News_Scrapy.items import NewsScrapyItem
 from scrapy.conf import settings
-import os,pickle,signal
+import os,pickle,json
+#import signal
 import sys,types,re
 from bs4 import BeautifulSoup
+import jieba.analyse
 
 ## MySelf define the Global Variable
 SAVED_URL = set()
@@ -56,5 +58,9 @@ class NetEaseSpider(CrawlSpider):
                     test = item.string.encode("utf-8")
                     contents = contents + test
             news_item["news_content"] = contents
+            key_map = {}
+            for x,w in jieba.analyse.extract_tags(contents,withWeight=True):
+                key_map[x] = w
+            news_item["news_key"] = json.dumps(key_map)
             return news_item
     

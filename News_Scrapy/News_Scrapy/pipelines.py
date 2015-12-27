@@ -30,7 +30,8 @@ class NewsScrapyPipeline(object):
                 "news_date":item['news_date'],
                 "news_title":item['news_title'],
                 "news_source":item['news_source'],
-                "news_content":item['news_content']
+                "news_content":item['news_content'],
+                "news_key":item['news_key']
             }]
             self.collection.insert(new_moive)
             log.msg("Item wrote to MongoDB database %s/%s" % (settings['MONGODB_DB'], settings['MONGODB_COLLECTION']),
