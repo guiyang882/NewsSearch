@@ -37,7 +37,9 @@ class NetEaseSpider(CrawlSpider):
             SAVED_URL.add(response.url)
             soup = BeautifulSoup(response.body)
             news_item = NewsScrapyItem()
-            news_item["news_title"] = soup.find("title").string
+            news_item["news_title"] = u"网易新闻"
+            if soup.find("title") != types.NoneType:
+                news_item["news_title"] = soup.find("title").string
             new_date_list = soup.findAll("div",{"class":["ep-time-soure cDGray","pub_time"]}) 
             news_date_re = re.findall(r"\d{2}/\d{4}/\d{2}",response.url)[0].split("/")
             news_item["news_date"] = "20" + news_date_re[0] + "-" + news_date_re[1][:2] + "-" + news_date_re[1][-2:] + " " + news_date_re[2]
