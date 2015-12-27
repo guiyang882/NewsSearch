@@ -1,0 +1,31 @@
+span {
+  display: inline-block;
+  width: 14%;
+  text-align: center;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.myli_header {
+	line-height: 10px;
+    list-style: none;
+	margin-top: 40px;
+	font-size: 20px;
+}
+
+.myli_content {
+  line-height: 10px;
+  list-style: none;
+  background-color: #f7f7f7;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+select {
+  width: 100px;
+}
+
+body{text-align:center} 
+.div{ margin:0 auto; width:100%; height:140px; border:1px solid #F00} 

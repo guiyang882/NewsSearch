@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Statistics | GPXSystem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Admin panel developed with the Bootstrap from Twitter.">
+    <meta name="author" content="travis">
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/site.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/mystyle.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="js/html5.js"></script>
+    <![endif]-->
+	<!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+    <style type="text/css">
+    html, body {
+        height: 100%;
+    }
+    </style>
+  </head>
+  <body>
+  <div class="navbar navbar-fixed-top"> 
+   <div class="navbar-inner"> 
+    <div class="container-fluid"> 
+     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> 
+     <a class="brand" href="index.html">用户管理系统</a> 
+     <div class="btn-group pull-right"> 
+      <a class="btn" href="my-profile.html"><i class="icon-user"></i>管理者</a> 
+      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <span class="caret"></span> </a> 
+      <ul class="dropdown-menu"> 
+       <li><a href="my-profile.html">配置信息</a></li> 
+       <li class="divider"></li> 
+       <li><a href="#">退出</a></li> 
+      </ul> 
+     </div> 
+     <div class="nav-collapse"> 
+      <ul class="nav"> 
+       <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">后台用户<b class="caret"></b></a> 
+        <ul class="dropdown-menu"> 
+         <li><a href="users-info.html">用户信息</a></li>
+        </ul> </li> 
+       <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">管理信息<b class="caret"></b></a> 
+        <ul class="dropdown-menu"> 
+         <li><a href="users-management.html">管理用户列表</a></li> 
+        </ul> 
+       </li> 
+       <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">状态<b class="caret"></b></a> 
+       <ul class="dropdown-menu"> 
+         <li><a href="stats.html">系统状态</a></li>
+         <li><a href="sendlog.html">发送日志</a></li>
+       </ul>
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </div>
+
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+      <div class="span9">
+		  <div class="row-fluid">
+			
+      <div class="page-header">
+        
+				<h1>客户通信日志</h1>
+
+        <h2>
+          <div style="float:left">
+            <input style="width:120px;margin:0px;margin-left:10px" type="text" placeholder="共   页" id="hint_totalPage">
+            <input type="button" class="btn" id="JumpPage" value="跳转" style="margin-left:10px" onclick="gotoIDPage();">
+          </div>
+
+          <div style="float:right">
+            <input type="button" id="Pre_Page" name="Pre_Page" value="上一页" class="btn" style='margin-right:20px' onclick="getPagePre();">
+            <input type="button" id="Next_Page" name="Next_Page" value="下一页" class="btn" onclick="getPageNext();">
+          </div>
+        </h2>
+        
+			</div>
+
+        <ul>
+        <li class="myli_header">
+          <span><SELECT id="Select_ID"><OPTION>编号</SELECT></span><span><SELECT id="Select_From"><OPTION>发送方</SELECT></span><span><SELECT id="Select_To" onchange="filterUserSendLog(this.options[this.options.selectedIndex].value);"><OPTION>接收方</SELECT></span><span><SELECT id="Select_Mode"><OPTION value="mode_default">通信方式<OPTION mode="mode_wx">微信<OPTION value="mode_message">短信<OPTION value="mode_other">其它</SELECT></span><span><SELECT id="Select_Time"><OPTION>发送时刻</SELECT></span><span><SELECT id="Select_Status"><OPTION value="status_defaut">发送状态<OPTION value="status_succed">发送成功<OPTION value="status_failed">发送失败</SELECT></span><span><SELECT id="Select_Content"><OPTION>通知内容</SELECT></span>
+        </li>
+        </ul>
+        
+        <ul id="list_SendLog_UL">
+        </ul>
+
+		  </div>
+      </div>
+      </div>
+    </div>
+
+
+  <script src="js/jquery.js"></script>
+	<script src="js/jquery.flot.js"></script>
+	<script src="js/jquery.flot.resize.js"></script>	
+	<script src="js/bootstrap.min.js"></script>
+  <script src="js/messagelog_info.js"></script>
+
+  </body>
+</html>
