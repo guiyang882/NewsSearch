@@ -5,6 +5,7 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from News_Scrapy.items import NewsScrapyItem
 from scrapy.conf import settings
+from scrapy.http import Request
 import os,pickle,json
 #import signal
 import sys,types,re
@@ -29,10 +30,31 @@ class NetEaseSpider(CrawlSpider):
     allowed_domains = ["news.163.com"]
     start_urls = ["http://news.163.com","http://news.163.com/domestic/","http://news.163.com/world/","http://news.163.com/shehui/","http://war.163.com/","http://gov.163.com/"]
     rules = [
-        Rule(SgmlLinkExtractor(allow=(r'http://[a-z]+.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
+        Rule(SgmlLinkExtractor(allow=(r'http://[a-z]+.163.com/[a-z]*')),callback="parse_item"),
+        Rule(SgmlLinkExtractor(allow=(r'http://[a-z]+.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item_yield"),
     ]
+    detail_re = re.compile(r'http://[a-z]+.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')
+    head_re = re.compile(r'http://[a-z]+.163.com')
 
     def parse_item(self,response):
+        if response.url not in SAVED_URL:
+            SAVED_URL.add(response.url)
+            soup = BeautifulSoup(response.body)
+            for item in soup.findAll("a"):
+                if item.has_attr("href"):
+                    head_url_list = re.findall(self.head_re,item["href"])
+                    detail_url_list = re.findall(self.detail_re,item["href"])
+                    if type(head_url_list) != types.NoneType:
+                        for tmp in head_url_list:
+                            if tmp not in SAVED_URL:
+                                yield Request(tmp,callback=self.parse_item_yield)
+                    if type(detail_url_list) != types.NoneType:
+                        for tmp in detail_url_list:
+                            if tmp not in SAVED_URL:
+                                yield Request(tmp,callback=self.parse_item_yield)
+
+
+    def parse_item_yield(self,response):
         if response.url not in SAVED_URL:
             SAVED_URL.add(response.url)
             soup = BeautifulSoup(response.body)
@@ -62,5 +84,18 @@ class NetEaseSpider(CrawlSpider):
             for x,w in jieba.analyse.extract_tags(contents,withWeight=True):
                 key_map[x] = w
             news_item["news_key"] = json.dumps(key_map)
-            return news_item
+            yield news_item
+
+            for item in soup.findAll("a"):
+                if item.has_attr("href"):
+                    head_url_list = re.findall(self.head_re,item["href"])
+                    detail_url_list = re.findall(self.detail_re,item["href"])
+                    if type(head_url_list) != types.NoneType:
+                        for tmp in head_url_list:
+                            if tmp not in SAVED_URL:
+                                yield Request(tmp,callback=self.parse_item_yield)
+                    if type(detail_url_list) != types.NoneType:
+                        for tmp in detail_url_list:
+                            if tmp not in SAVED_URL:
+                                yield Request(tmp,callback=self.parse_item_yield)
     
