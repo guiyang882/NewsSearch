@@ -27,11 +27,9 @@ def save_url_pkl(sig,frame):
 class NetEaseSpider(CrawlSpider):
     name = "News_Scrapy"
     allowed_domains = ["news.163.com"]
-    start_urls = ["http://news.163.com/domestic/","http://news.163.com/world/","http://news.163.com/shehui/","http://war.163.com/","http://gov.163.com/"]
+    start_urls = ["http://news.163.com","http://news.163.com/domestic/","http://news.163.com/world/","http://news.163.com/shehui/","http://war.163.com/","http://gov.163.com/"]
     rules = [
-        Rule(SgmlLinkExtractor(allow=(r'http://news.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
-        Rule(SgmlLinkExtractor(allow=(r'http://war.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
-        Rule(SgmlLinkExtractor(allow=(r'http://gov.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
+        Rule(SgmlLinkExtractor(allow=(r'http://[a-z]+.163.com/[0-9]{2}/[0-9]{3,4}/[0-9]{1,2}/[a-zA-Z0-9]+.html')),callback="parse_item"),
     ]
 
     def parse_item(self,response):
