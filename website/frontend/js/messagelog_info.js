@@ -1,60 +1,39 @@
 var page_Len = 50;
 var total_Pages = 0;
-var cur_Page = 1;
+var key_default = "旅行";
 
-showPage(cur_Page);
-addSendUserName();
+showPage(key_default);
 
-function showPage(page_id){
-    var begin = (page_id-1)*page_Len+1;
-    var end = begin+page_Len-1;
-
-    var contents = {"CONTENTS":"MESSAGELOG","begin":begin,"end":end};
-    send_Data_Backend(contents);
-}
-
-function addSendUserName() {
-    var contents = {"CONTENTS":"USERNAMES"};
+function showPage(key_info){
+    var contents = {"CONTENTS":"SEARCH","QUERY":key_info};
+    console.log(contents);
     send_Data_Backend(contents);
 }
 
 function send_Data_Backend(content) {
     $.ajax({
-        　　　　　　url: 'http://127.0.0.1:8080/',
-        　　　　　　type: 'GET',
-        　　　　　　data: content,
-        　　　　　　//调小超时时间会引起异常
-        　　　　　　timeout: 5000,
-        　　　　　　//请求成功后触发
-        　　　　　　success: function (data) {
-                    if(data.name == "MessageLog" || data.name == "UserSendLog"){
-                        showMessageLogInfo(data);    
-                    }
-                    if(data.name == "UserNames") {
-                        showUsersName(data);
-                    }
+        　　url: 'http://127.0.0.1:8080/',
+        　　type: 'GET',
+        　  data: content,
+        　　//调小超时时间会引起异常
+        　　timeout: 5000,
+        　　//请求成功后触发
+        　　success: function (data) {
+                if(data.name == "MessageLog" || data.name == "UserSendLog"){
+                    showMessageLogInfo(data);    
+                }
               },
-        　　　　　　//请求失败遇到异常触发
-        　　　　　　error: function (xhr, errorInfo, ex) { console.log(errorInfo);},
-        　　　　　　//完成请求后触发。即在success或error触发后触发
-        　　　　　　complete: function (xhr, status) { console.log(status); },
-        　　　　　　//发送请求前触发
-        　　　　　　beforeSend: function (xhr) {
-            　　　　　　xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+        　　//请求失败遇到异常触发
+        　　error: function (xhr, errorInfo, ex) { console.log(errorInfo);},
+        　　//完成请求后触发。即在success或error触发后触发
+        　　complete: function (xhr, status) { console.log(status); },
+        　　//发送请求前触发
+        　　beforeSend: function (xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
             },
-    　　　　　　//是否使用异步发送
-    　　　　　　async: true
-    　　　　})
-}
-
-function showUsersName(data) {
-    if(data.name == "UserNames") {
-        var select_Obj = document.getElementById("Select_To");
-        select_Obj.options.length = 1;
-        for(var index in data.data){
-            select_Obj.add(new Option(data.data[index],data.data[index]));
-        }
-    }
+    　　　　//是否使用异步发送
+    　　　　async: true
+    })
 }
 
 function showMessageLogInfo(data){
@@ -109,47 +88,9 @@ function showMessageLogInfo(data){
     }
 }
 
-function  getPagePre(){
-    if(cur_Page-1>0){
-        cur_Page = cur_Page-1;
-        showPage(cur_Page);
-    }else{
-        window.alert("这已经是第一页");
-    }
-}
-
-function getPageNext() {
-    if(cur_Page+1<=total_Pages){
-        cur_Page = cur_Page+1;
-        showPage(cur_Page);
-    }else{
-        window.alert("这已经是最后一页");
-    }
-}
-
 function gotoIDPage() {
-    var id = document.getElementById("hint_totalPage").value;
-    var n_idth = parseInt(id);
+    key_default = document.getElementById("hint_totalPage").value;
     
-    console.log(n_idth);
-    if(!isNaN(n_idth)){
-        console.log(n_idth);
-        if(n_idth > total_Pages){
-            window.alert("这已经是最后一页");
-            document.getElementById("hint_totalPage").placeholder = "共 "+total_Pages+" 页";
-        }else if(n_idth < 1){
-            window.alert("这已经是第一页");   
-            document.getElementById("hint_totalPage").placeholder = "共 "+total_Pages+" 页";
-        }else{
-            cur_Page = n_idth;
-            showPage(n_idth);   
-            document.getElementById("hint_totalPage").placeholder = "共 "+total_Pages+" 页";
-        }
-    }
-}
-
-function filterUserSendLog(name) {
-    console.log(name);
-    var contents = {"CONTENTS":"FILTERUSER","NAME":name};
-    send_Data_Backend(contents);
+    console.log(key_default);
+    showPage(key_default);
 }

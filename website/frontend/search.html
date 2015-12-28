@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>信息索引 | 国科大</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Admin panel developed with the Bootstrap from Twitter.">
+    <meta name="author" content="travis">
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/site.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/mystyle.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="js/html5.js"></script>
+    <![endif]-->
+	<!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+    <style type="text/css">
+    html, body {
+        height: 100%;
+    }
+    </style>
+  </head>
+  <body>
+  <div class="navbar navbar-fixed-top"> 
+   <div class="navbar-inner"> 
+    <div class="container-fluid"> 
+     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> 
+     <a class="brand" href="search.html">信息索引</a> 
+    </div> 
+   </div> 
+  </div>
+
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+      <div class="span9">
+		<div class="row-fluid">
+			
+      <div class="page-header">
+        <h2>
+          <div style="center">
+            <input style="width:200px;margin:auto;" type="text" placeholder="Search..." id="hint_totalPage">
+            <input type="button" class="btn" id="JumpPage" value="查寻" style="margin-left:10px" onclick="gotoIDPage();">
+          </div>
+        </h2>
+        
+			</div>
+
+        <ul>
+        <li class="myli_header">
+          <span><SELECT id="Select_ID"><OPTION>编号</SELECT></span>
+		  <span><SELECT id="Select_From"><OPTION>新闻标题</SELECT></span>
+		  <span><SELECT id="Select_Mode"><OPTION value="mode_default">信息来源</SELECT></span>
+		  <span><SELECT id="Select_Time"><OPTION>信息发布时间</SELECT></span>
+		  <span><SELECT id="Select_Content"><OPTION>新闻内容</SELECT></span>
+		  <span><SELECT id="Select_KeyWord"><OPTION>关键字</SELECT></span>
+        </li>
+        </ul>
+        
+        <ul id="list_SendLog_UL">
+        </ul>
+
+		</div>
+      </div>
+      </div>
+    </div>
+
+
+  <script src="js/jquery.js"></script>
+	<script src="js/jquery.flot.js"></script>
+	<script src="js/jquery.flot.resize.js"></script>	
+	<script src="js/bootstrap.min.js"></script>
+  <script src="js/messagelog_info.js"></script>
+
+  </body>
+</html>
