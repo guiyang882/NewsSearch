@@ -17,10 +17,11 @@ def load_News_DB():
             news_key_str = item["news_key"]
             news_key = json.loads(news_key_str)
             for word in news_key.keys():
-                if key_index_map.has_key(word):
-                    key_index_map[word].append((item["news_title"],news_key[word]))
-                else:
-                    key_index_map[word] = [(item["news_title"],news_key[word])]
+                if word.isdigit() == False:
+                    if key_index_map.has_key(word):
+                        key_index_map[word].append((item["news_title"],news_key[word]))
+                    else:
+                        key_index_map[word] = [(item["news_title"],news_key[word])]
     with open("index.json",'w') as handle:
         handle.write(json.dumps(key_index_map))
 
