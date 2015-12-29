@@ -1,7 +1,8 @@
 #-*- coding:utf-8 -*-
 
 import web
-import json
+import json,os
+import pickle
 
 urls = (
     "/","index"
@@ -38,8 +39,23 @@ class index:
 
     def search_related(self,key_word):
         result = {'name':'search',"data":[]}
+        result["data"] = self.read_news_index(key_word)
         return result
 
+    def read_news_index(self,key_word):
+        base_dir = "../../News_Index/"
+        title_list = []
+        for filename in os.listdir(base_dir):
+            if filename.endswith("pkl"):
+                with open(base_dir + filename,"rb") as handle:
+                    index_map = pickle.load(handle)
+                    if index_map.has_key(key_word):
+                        title_list.extend(index_map[key_word])
+                        if len(title_list) >= 10:
+                            break
+        return title_list
+            
+    
 if __name__ == "__main__":
     web.config.debug = False
     app = web.application(urls,globals())
