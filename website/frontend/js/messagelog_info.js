@@ -61,20 +61,20 @@ function showMessageLogInfo(data) {
 			});
 
 		var span_from = $('<span/>');
-		span_from.text(messageLog[index]);
+		span_from.text(messageLog[index].news_title);
 
 		var span_to = $('<span/>');
-		span_to.text("网易新闻");
+		span_to.text(messageLog[index].news_source);
 
 		var span_mode = $('<span/>');
-		span_mode.text("2015-12-20 10:00:00");
+		span_mode.text(messageLog[index].news_date);
 
 		var span_contents = $('<span/>');
 		var textarea = $('<textarea/>', {
 				"rows" : 2,
 				"cols" : 20
 			});
-		textarea.text("内容");
+		textarea.text(messageLog[index].news_content);
         textarea.appendTo(span_contents);
         
         var span_key = $('<span/>');
@@ -82,7 +82,7 @@ function showMessageLogInfo(data) {
 				"rows" : 2,
 				"cols" : 20
 			});
-		key_area.text("关键字");
+		key_area.text(messageLog[index].news_key);
         key_area.appendTo(span_key);
 
 		span_from.appendTo(li);

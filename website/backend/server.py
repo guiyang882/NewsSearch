@@ -3,10 +3,20 @@
 import web
 import json,os
 import pickle
+import pymongo
 
 urls = (
     "/","index"
 )
+
+connection = pymongo.Connection("127.0.0.1",27017)
+db = connection["python"]
+cursor = db["test"]
+
+def fetch_News_info(news_title):
+    data = list(cursor.find({"news_title":news_title},{"_id":0}))[0]
+    #data["news_key"] = json.loads(data["news_key"])
+    return data
 
 class index:
     def GET(self):
@@ -50,9 +60,12 @@ class index:
                 with open(base_dir + filename,"rb") as handle:
                     index_map = pickle.load(handle)
                     if index_map.has_key(key_word):
-                        title_list.extend(index_map[key_word])
-                        if len(title_list) >= 10:
-                            break
+                        for title in index_map[key_word]:
+                            news_content = fetch_News_info(title)
+                            print news_content.keys()
+                            title_list.append(news_content)
+                            if len(title_list) >= 1:
+                                return title_list
         return title_list
             
     
