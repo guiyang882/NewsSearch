@@ -1,5 +1,15 @@
-# This dir main to save the Web Code
+# 主要是网站前端和后台服务器
 
-## BackEnd
+## 前端界面
+- 使用html搭建简单的页面
+- 通过ajax请求想后台服务器请求指定的查询信息
+- 并动态的显示出相关的新闻信息
 
-## FrontEnd
+## 后台服务器
+- 使用webpy搭建简答的后台服务
+- 并且可以在在同一个域内访问和测试
+- 通过对比mongodb中的数据进行相关度匹配
+- 可以通过下列命令运行服务
+```
+python server.py
+```
