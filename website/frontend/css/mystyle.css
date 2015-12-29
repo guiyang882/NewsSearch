@@ -1,6 +1,6 @@
 span {
   display: inline-block;
-  width: 14%;
+  width: 20%;
   text-align: center;
   font-weight: bold;
   font-style: normal;
@@ -19,8 +19,10 @@ span {
   background-color: #f7f7f7;
   line-height: 30px;
   text-align: center;
-  font-size: 14px;
+  font-size: 10px;
   color: #333;
+  text-overflow:ellipsis;
+  overflow:hidden;
 }
 
 select {
